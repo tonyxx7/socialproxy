@@ -42,7 +42,7 @@ CDEBUGFLAGS = -Os -g -Wall
 # LDLIBS = -lwsock32
 
 # added by Yangkun
-EXTRA_DEFINES = -I/usr/local/include/libxml2 -lpthread -lxml2 -lcurl \
+EXTRA_DEFINES = -I/usr/include/libxml2 -lpthread -lxml2 -lcurl \
 
 FILE_DEFINES = -DLOCAL_ROOT=\"$(LOCAL_ROOT)/\" \
                -DDISK_CACHE_ROOT=\"$(DISK_CACHE_ROOT)/\"
