@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#Install  manual for Linux
 
 = Installation =
 
@@ -22,10 +22,7 @@ Add your content here.  Format your content with:
 
 =CentOS/Federa=
 
-#yum install curl
-
-#yum install curl-devel
-
-#yum install libxml2
-
-#yum install libxml2-devel
+ #yum install curl
+ #yum install curl-devel
+ #yum install libxml2
+ #yum install libxml2-devel
