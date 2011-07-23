@@ -2,8 +2,8 @@
 # You should not need to edit this configuration file; all configuration
 # variables have reasonable defaults.
 
-username  =  "duanhaixin"
-password  =  "675077"
+username  =  "test"
+password  =  "test123"
 
 #parentProxy = "163.43.162.176:8123:123-166.111.132.138,59.66.24.184"
 #parentProxy = "166.111.132.226:8123:123-127.0.0.1"
