@@ -5,8 +5,9 @@
 ==Linux requirements==
 Before compile the source code, you should install the following libraries:
 
-#curl-devel
-#libxml2-devel
+ #curl-devel
+
+ #libxml2-devel
 
 
 
