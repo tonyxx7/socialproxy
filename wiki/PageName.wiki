@@ -1,0 +1,29 @@
+#summary One-sentence summary of this page.
+
+= Install =
+
+==Linux requirements==
+Before compile the source code, you should install the following libraries:
+
+#curl-devel
+#libxml2-devel
+
+
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+=CentOS/Federa=
+
+#yum install curl
+
+#yum install curl-devel
+
+#yum install libxml2
+
+#yum install libxml2-devel
