@@ -104,7 +104,7 @@ main(int argc, char **argv)
     friendList->list = NULL;
     friendList->size = 0;
     
-    const char *address = "http://social.sec.ccert.edu.cn/heartbeat.php";
+    const char *address = "http://social.ccert.edu.cn/heartbeat.php";
 
     // initialize thread variables
     pthread_t tid;
