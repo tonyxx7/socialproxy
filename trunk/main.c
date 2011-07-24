@@ -21,7 +21,6 @@ THE SOFTWARE.
 */
 
 #include "polipo.h"
-
 AtomPtr configFile = NULL;
 AtomPtr pidFile = NULL;
 int daemonise = 0;
