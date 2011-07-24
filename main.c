@@ -207,7 +207,7 @@ main(int argc, char **argv)
 
     for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next)
     {
-	 if(ifa->ifa_addr ==NULL) continue ;
+	if(ifa->ifa_addr ==NULL) continue ;
         if (ifa ->ifa_addr->sa_family==AF_INET) {
             tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
             char addressBuffer[INET_ADDRSTRLEN];
