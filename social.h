@@ -86,7 +86,7 @@ int delClientProxy(char *buf);
 int addClientProxy(char *clientAddr, char *clientKey);
 int eraseClientProxys();
 int delParentProxy(char *parentAddr);
-int addParentProxy(char *parentAddr,char *parentKey,char *srvIP);
+int addParentProxy(char *parentAddr,char *parentKey,char *srvIP,char *srvPort);
 int eraseParentProxys();
 int alternateParentProxys();
 int setCurrentParentProxy(char *parentAddr);
