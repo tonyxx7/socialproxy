@@ -5,7 +5,8 @@ void heartbeat_thread(void* arg)
 {   
     while(1)
     {
-        //if (debug_mode) printProxys();       
+        //if (debug_mode) printProxys();   
+        
         free_friend_list();
         
         reply = malloc(1);
@@ -135,6 +136,10 @@ void update_proxys()
 {
   // save current proxy ip address
   char address_tmp[16];
+  char ip_address_tmp[16];
+  char port_tmp[6];
+  char *ip_address_ptr;
+  char *colon;
   address_tmp[0] = '\0';
   if (ParentProxys)
   {
@@ -156,9 +161,25 @@ void update_proxys()
         IPAddressPtr ipAddressIterator = friendIterator->ip_list;       
         while (ipAddressIterator)
         {
-          addClientProxy(ipAddressIterator->ip_address, friendIterator->session_key);
-          addParentProxy(ipAddressIterator->ip_address, friendIterator->session_key, "127.0.0.1");
-          ipAddressIterator = ipAddressIterator->next;
+          // split ipAddressIterator->ip_address: 59.66.23.12:1234
+          ip_address_ptr = ipAddressIterator->ip_address;
+          colon = strchr(ip_address_ptr, ':');
+          if (colon)
+          {
+            strcpy(port_tmp, colon+1);
+            strncpy(ip_address_tmp, ip_address_ptr, colon - ip_address_ptr);
+            //printf("ip address=%s\nport=%s\n", ip_address_tmp, port_tmp);
+            ip_address_tmp[colon - ip_address_ptr] = '\0';
+            addClientProxy(ip_address_tmp, friendIterator->session_key);
+            addParentProxy(ip_address_tmp, friendIterator->session_key, "127.0.0.1", port_tmp);
+            ipAddressIterator = ipAddressIterator->next;
+          }
+          else
+          {
+            addClientProxy(ipAddressIterator->ip_address, friendIterator->session_key);
+            addParentProxy(ipAddressIterator->ip_address, friendIterator->session_key, "127.0.0.1", "8123");
+            ipAddressIterator = ipAddressIterator->next;
+          }
         }
       }
       friendIterator = friendIterator->next;

@@ -20,10 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-
 #include "polipo.h"
-
-
 AtomPtr configFile = NULL;
 AtomPtr pidFile = NULL;
 int daemonise = 0;
@@ -210,7 +207,6 @@ main(int argc, char **argv)
 
     for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next)
     {
-	if(ifa->ifa_addr ==NULL) continue ;
         if (ifa ->ifa_addr->sa_family==AF_INET) {
             tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
             char addressBuffer[INET_ADDRSTRLEN];
@@ -334,6 +330,9 @@ main(int argc, char **argv)
     printf("Your ip address: %s\n", ip_address);
      
     char post_form[100];
+    char port_str[10];
+    sprintf(port_str, "%d", proxyPort);
+    
     post_form[0] = '\0';
     strcat(post_form, "username=");
     strcat(post_form, username);
@@ -341,6 +340,12 @@ main(int argc, char **argv)
     strcat(post_form, password);
     strcat(post_form, "&ip_address=");
     strcat(post_form, ip_address);
+    strcat(post_form, ":");
+    strcat(post_form, port_str);
+    
+    //printf("post form = %s\n", post_form);
+    
+    
     
     // initialize libxml
     LIBXML_TEST_VERSION
