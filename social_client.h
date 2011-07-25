@@ -29,6 +29,7 @@ extern const char *username;
 extern const char *password;
 extern const char *network_interface;
 extern const char *ip_address;
+extern const char *address;
 extern const char * social_error_message[10];
 extern FriendListRec friendListRec;
 extern FriendListPtr friendList;

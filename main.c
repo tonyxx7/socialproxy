@@ -30,6 +30,7 @@ const char *username = NULL;
 const char *password = NULL;
 const char *ip_address = NULL;
 const char *network_interface = NULL;
+const char *address = NULL;
 int wel_msg = 1;
 
 const char * social_error_message[10];
@@ -104,7 +105,7 @@ main(int argc, char **argv)
     friendList->list = NULL;
     friendList->size = 0;
     
-    const char *address = "http://social.ccert.edu.cn/heartbeat.php";
+    //const char *address = "http://social.ccert.edu.cn/heartbeat.php";
 
     // initialize thread variables
     pthread_t tid;
@@ -318,13 +319,13 @@ main(int argc, char **argv)
         i++;
     }
 
-    if (username == NULL || password == NULL)
+    if (username == NULL || password == NULL || address == NULL)
     {
-      printf("Please specify username&password in config file.\n");
+      printf("Please specify username&password&server in config file.\n");
       usage(argv[0]);
       exit(1);
     }
-
+    printf("Server address: %s\n", address);
     printf("Your username: %s\n", username);
     // printf("password: %s\n", password);
     // printf("interface: %s\n", network_interface);
