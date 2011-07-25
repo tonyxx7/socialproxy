@@ -501,7 +501,7 @@ int insertParentProxy(char *buf,int i)  //humeng add 11.5.10
 
 }
 
-int getUsername(char *buf,int i)  //humeng add 11.5.10
+int getUsername(char *buf,int i)  //added by yangkun
 {
     AtomPtr temp;
     int x;
@@ -522,7 +522,7 @@ int getUsername(char *buf,int i)  //humeng add 11.5.10
     return 0;
 }
 
-int getPassword(char *buf,int i)  //humeng add 11.5.10
+int getPassword(char *buf,int i)  //added by yangkun
 {
     AtomPtr temp;
     int x;
@@ -538,6 +538,30 @@ int getPassword(char *buf,int i)  //humeng add 11.5.10
     {
         temp = internAtomN(buf+x,i-x-1);
         password = temp->string;
+    }
+    return 0;
+}
+
+int setAddress(char *buf,int i)  //added by yangkun
+{
+    AtomPtr temp1, temp2;
+    int x;
+    if(!buf[i]=='=') return -1;
+    i++;
+    x=skipBlank(buf,i);
+    while(!(buf[i] == '\n' || buf[i] == '\0' || buf[i] == '#'))
+    {
+        skipBlank(buf,i);
+        i++;
+    }
+    if(i>x+1)
+    {
+        temp1 = internAtomN(buf+x,i-x-1);
+        temp2 = internAtom("http://");
+        temp2 = atomCat(temp2, temp1->string);
+        temp2 = atomCat(temp2, "/heartbeat.php");
+        releaseAtom(temp1);
+        address = temp2->string;
     }
     return 0;
 }

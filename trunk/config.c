@@ -671,6 +671,10 @@ parseConfigLine(char *line, char *filename, int lineno, int set)
     {
         return getPassword(line, i);
     }
+    if(strcmp(name->string,"server")==0)        //humeng add 11.5.10
+    {
+        return setAddress(line, i);
+    }
     var = findConfigVariable(name);
     //printf("%s\n",var->name->string);
     //printf("%s\n",name->string);
