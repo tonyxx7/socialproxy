@@ -175,21 +175,21 @@ void update_proxys()
             if (ip_address_tmp[0] == "N")
             {
                 addClientProxy(ip_address_tmp+1, friendIterator->session_key);
-                // addParentProxy(ip_address_tmp+1, friendIterator->session_key, "127.0.0.1", port_tmp);
+                // addParentProxy(ip_address_tmp+1, friendIterator->session_key, "127.0.0.1", port_tmp, , friendIterator->username);
                 ipAddressIterator = ipAddressIterator->next;
                 
             }
             else
             {
                 addClientProxy(ip_address_tmp, friendIterator->session_key);
-                addParentProxy(ip_address_tmp, friendIterator->session_key, "127.0.0.1", port_tmp);
+                addParentProxy(ip_address_tmp, friendIterator->session_key, "127.0.0.1", port_tmp, friendIterator->username);
                 ipAddressIterator = ipAddressIterator->next;
             }
           }
           else
           {
             addClientProxy(ipAddressIterator->ip_address, friendIterator->session_key);
-            addParentProxy(ipAddressIterator->ip_address, friendIterator->session_key, "127.0.0.1", "8123");
+            addParentProxy(ipAddressIterator->ip_address, friendIterator->session_key, "127.0.0.1", "8123", friendIterator->username);
             ipAddressIterator = ipAddressIterator->next;
           }
         }

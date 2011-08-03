@@ -51,6 +51,7 @@ typedef struct _pProxy                  //humeng add 11.5.10
     AtomPtr addr;
     AtomPtr port;
     AtomPtr key;
+    AtomPtr friendName;
     unsigned char keyHash;
     unsigned int delay;    
     NetAddressPtr allowIP;
@@ -86,7 +87,7 @@ int delClientProxy(char *buf);
 int addClientProxy(char *clientAddr, char *clientKey);
 int eraseClientProxys();
 int delParentProxy(char *parentAddr);
-int addParentProxy(char *parentAddr,char *parentKey,char *srvIP,char *srvPort);
+int addParentProxy(char *parentAddr,char *parentKey,char *srvIP,char *srvPort,char *friendName);
 int eraseParentProxys();
 int alternateParentProxys();
 int setCurrentParentProxy(char *parentAddr);
