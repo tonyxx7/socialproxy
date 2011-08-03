@@ -59,9 +59,7 @@ usage(char *argv0)
     fprintf(stderr, "  -v: display the list of configuration variables.\n");
     fprintf(stderr, "  -x: perform expiry on the disk cache.\n");
     fprintf(stderr, "  -c: specify the configuration file to use.\n");
-    //fprintf(stderr, "  -i: interface.\n");
-    //fprintf(stderr, "  -u: username.\n");
-    //fprintf(stderr, "  -p: password.\n");
+    fprintf(stderr, "  -i: interface.\n");
     
 }
 
@@ -83,8 +81,6 @@ int
 main(int argc, char **argv)
 {
 
-    
-    
     // added by yangkun
     social_error_message[0] = "No error";
     social_error_message[1] = "Failed to parse HTTP reply";
@@ -161,22 +157,6 @@ main(int argc, char **argv)
         } else if(strcmp(argv[i], "-d") == 0) {
             debug_mode = 1;
             i++;
-        // } else if(strcmp(argv[i], "-u") == 0) {
-            // i++;
-            // if(i >= argc) {
-                // usage(argv[0]);
-                // exit(1);
-            // }
-            // username = argv[i];
-            // i++;
-        // } else if(strcmp(argv[i], "-p") == 0) {
-            // i++;
-            // if(i >= argc) {
-                // usage(argv[0]);
-                // exit(1);
-            // }
-            // password = argv[i];
-            // i++;
         } else if(strcmp(argv[i], "-i") == 0) {
             i++;
             if(i >= argc) {
@@ -208,40 +188,91 @@ main(int argc, char **argv)
 
     for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next)
     {
-	if (ifa ->ifa_addr==NULL) continue;
+        if (ifa ->ifa_addr == NULL) continue;
         if (ifa ->ifa_addr->sa_family==AF_INET) {
             tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
             char addressBuffer[INET_ADDRSTRLEN];
             inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
+                       
+            unsigned int addr_unsigned = addr_to_unsigned((unsigned int)((struct in_addr *)tmpAddrPtr)->s_addr);
+            int if_private = 0;
+            if ((addr_unsigned >= 0x0A000000 && addr_unsigned <= 0x0AFFFFFF ) ||
+                (addr_unsigned >= 0xAC100000 && addr_unsigned <= 0xAC1FFFFF ) ||
+                (addr_unsigned >= 0xC0A80000 && addr_unsigned <= 0xC0A8FFFF )
+                )
+            {
+                // private ip detected!
+                if_private = 1;
+            }
+            
             if (network_interface)
             {
               if (strcmp(network_interface, ifa->ifa_name)==0)
               {
-                ip_address = addressBuffer;
+              
+                if (strcmp(addressBuffer, "127.0.0.1") == 0)
+                {
+                    printf("You cannot use loopback network interface.\n");
+                    exit(1);
+                }
+                                          
+                // void * tmp;
+                // inet_pton(AF_INET, "10.255.255.255", tmp);
                 
+                // unsigned int addr_unsigned1 = addr_to_unsigned((unsigned int)(((struct in_addr *)tmp)->s_addr));
+                // printf("unsigned1=%ustandard=%u\n", addr_unsigned1, 0x0AFFFFFF);
+                // unsigned int addr_unsigned = addr_to_unsigned((unsigned int)((struct in_addr *)tmpAddrPtr)->s_addr);
+                // printf("unsigned=%u\n", addr_unsigned);
                 
-                // check ip address
-                
-                
+                if (if_private)
+                {
+                    // private ip detected!
+                    printf("You are using private ip address which is not well supported.\n");
+                    // printf("You are unable to provide proxy service for your friends.\n");
+                    exit(1);
+                    
+                    AtomPtr temp;
+                    temp = internAtom("N");
+                    
+                    temp = internAtom("http://");
+                    temp = atomCat(temp, addressBuffer);
+                    ip_address = temp->string;
+                }
+                else
+                {
+                    ip_address = addressBuffer;
+                }
                 
                 break;
               }
             }
             else
-            {
-            
-            
-              if (strcmp("lo", ifa->ifa_name) && strcmp("lo0", ifa->ifa_name))
-              {
-                ip_address = addressBuffer;
-                network_interface = ifa->ifa_name;
-                break;
-              }
+            {          
+                if (strcmp(addressBuffer, "127.0.0.1") == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                
+                    if (if_private)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        ip_address = addressBuffer;
+                        network_interface = ifa->ifa_name;
+                        break;
+                    }
+                    
+                }
+                
             }
              
         }
     }
-    if (ifAddrStruct!=NULL) freeifaddrs(ifAddrStruct);
+    if (ifAddrStruct != NULL) freeifaddrs(ifAddrStruct);
     
     
     
@@ -283,7 +314,7 @@ main(int argc, char **argv)
     
     if (ip_address == NULL)
     {
-      printf("Public address not found.\n");
+      printf("Public address not found.\nPlease specify a network interface.\n");
       exit(1);
     }
     
@@ -347,8 +378,6 @@ main(int argc, char **argv)
     
     //printf("post form = %s\n", post_form);
     
-    
-    
     // initialize libxml
     LIBXML_TEST_VERSION
     
@@ -366,7 +395,6 @@ main(int argc, char **argv)
     curl_res = curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_form);   
     curl_res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &process_data);
     curl_res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &reply);
-    
     
     initChunks();
     initLog();
