@@ -340,7 +340,7 @@ ilen += strlen("<td>");
       entryno++;
 memset(buffer,0,sizeof(buffer));
 
-      sprintf(buffer, "%d</td><td>%s</td><td>%s</td>", entryno, pvar->addr->string ,"    ");
+      sprintf(buffer, "%d</td><td>%s</td><td>%s</td>", entryno, pvar->addr->string ,pvar->friendName->string);
           objectPrintf(object,ilen,buffer);
 ilen += strlen(buffer);
 

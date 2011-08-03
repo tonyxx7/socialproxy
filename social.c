@@ -180,51 +180,7 @@ int delParentProxy(char *parentAddr)     //add by humeng @ 2011.5.17
      return(0);
 }
 
-// int addParentProxy(char *parentAddr,char *parentKey,char *srvIP)     //add by humeng @ 2011.5.17
-// {
-     // ParentProxyPtr prtPrxs,node;
-     // AtomPtr allowIP;
-     // AtomListPtr tempList;
-     // prtPrxs=ParentProxys;
-     // allowIP=internAtom(srvIP);
-     // tempList=findProxyClient(allowIP->string);
-     // while(prtPrxs){
-          // if(strcmp(prtPrxs->addr->string,parentAddr)==0){
-               // prtPrxs->key=internAtom(parentKey);
-               // prtPrxs->keyHash=keyHasher(prtPrxs->key->string, prtPrxs->key->length);
-               // if(prtPrxs->allowIP){
-                   // free(prtPrxs->allowIP);
-                   // prtPrxs->allowIP=NULL;
-               // }
-               // if(tempList){
-                   // prtPrxs->allowIP=parseNetAddress(tempList);
-               // }
-               // return(1);
-          // }
-          // if(prtPrxs->next==NULL)break;
-          // prtPrxs=prtPrxs->next;
-     // }
-     // node=malloc(sizeof(ParentProxyRec));
-     // node->next=NULL;
-     // node->addr=internAtom(parentAddr);
-     // node->key=internAtom(parentKey);
-     // node->keyHash=keyHasher(node->key->string, node->key->length);
-     // node->port=internAtom("8123");
-     // if(tempList){
-         // node->allowIP=parseNetAddress(tempList);
-     // }
-     // if(ParentProxys)
-         // prtPrxs->next=node;
-     // /*{
-         // node->next=ParentProxys;
-         // ParentProxys=node;
-     // }*/
-     // else
-         // ParentProxys=node;
-     // return(1);
-// }
-
-int addParentProxy(char *parentAddr,char *parentKey,char *srvIP,char *srvPort)     //modified by yangkun
+int addParentProxy(char *parentAddr,char *parentKey,char *srvIP,char *srvPort, char *friendName)     //modified by yangkun
 {
      ParentProxyPtr prtPrxs,node;
      AtomPtr allowIP;
@@ -236,6 +192,16 @@ int addParentProxy(char *parentAddr,char *parentKey,char *srvIP,char *srvPort)  
           if(strcmp(prtPrxs->addr->string,parentAddr)==0){
                prtPrxs->key=internAtom(parentKey);
                prtPrxs->keyHash=keyHasher(prtPrxs->key->string, prtPrxs->key->length);
+               if (node->port)
+               {
+                    releaseAtom(node->port);
+               }
+               if (node->friendName)
+               {
+                    releaseAtom(node->friendName);
+               }
+               node->port=internAtom(srvPort);
+               node->friendName=internAtom(friendName);
                if(prtPrxs->allowIP){
                    free(prtPrxs->allowIP);
                    prtPrxs->allowIP=NULL;
@@ -254,6 +220,7 @@ int addParentProxy(char *parentAddr,char *parentKey,char *srvIP,char *srvPort)  
      node->key=internAtom(parentKey);
      node->keyHash=keyHasher(node->key->string, node->key->length);
      node->port=internAtom(srvPort);
+     node->friendName=internAtom(friendName);
      if(tempList){
          node->allowIP=parseNetAddress(tempList);
      }
@@ -460,6 +427,7 @@ int insertParentProxy(char *buf,int i)  //humeng add 11.5.10
         return -1;
     }
     node->port=port;
+    //node->friendName=intern;
     rc = atomSplit(temp, '-', &key, &allowIP);
     if(rc <= 0) {
         do_log(L_ERROR, "Couldn't parse parentProxy.");
