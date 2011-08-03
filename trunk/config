@@ -3,11 +3,11 @@
 # variables have reasonable defaults.
 
 # Please fill your account information below
-username  =  "yangkun"
-password  =  "kelwin2006"
+username  =  "test"
+password  =  "test123"
 server = "social.ccert.edu.cn"
 # You can modify proxy port below
-proxyPort = 2222
+proxyPort = 8123
 
 #parentProxy = "163.43.162.176:8123:123-166.111.132.138,59.66.24.184"
 #parentProxy = "166.111.132.226:8123:123-127.0.0.1"
