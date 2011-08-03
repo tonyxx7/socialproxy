@@ -99,6 +99,7 @@ install.binary: all
 	cp -f polipo $(TARGET)$(BINDIR)/
 	cp -f html/* $(TARGET)$(LOCAL_ROOT)/doc
 	cp -f localindex.html $(TARGET)$(LOCAL_ROOT)/index.html
+	cp -f config ~/.polipo
 
 install.man: all
 	mkdir -p $(TARGET)$(MANDIR)/man1
