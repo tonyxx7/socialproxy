@@ -163,6 +163,7 @@ void update_proxys()
         {
           // split ipAddressIterator->ip_address: 59.66.23.12:1234
           ip_address_ptr = ipAddressIterator->ip_address;
+          
           colon = strchr(ip_address_ptr, ':');
           if (colon)
           {
@@ -170,9 +171,20 @@ void update_proxys()
             strncpy(ip_address_tmp, ip_address_ptr, colon - ip_address_ptr);
             //printf("ip address=%s\nport=%s\n", ip_address_tmp, port_tmp);
             ip_address_tmp[colon - ip_address_ptr] = '\0';
-            addClientProxy(ip_address_tmp, friendIterator->session_key);
-            addParentProxy(ip_address_tmp, friendIterator->session_key, "127.0.0.1", port_tmp);
-            ipAddressIterator = ipAddressIterator->next;
+            
+            if (ip_address_tmp[0] == "N")
+            {
+                addClientProxy(ip_address_tmp+1, friendIterator->session_key);
+                // addParentProxy(ip_address_tmp+1, friendIterator->session_key, "127.0.0.1", port_tmp);
+                ipAddressIterator = ipAddressIterator->next;
+                
+            }
+            else
+            {
+                addClientProxy(ip_address_tmp, friendIterator->session_key);
+                addParentProxy(ip_address_tmp, friendIterator->session_key, "127.0.0.1", port_tmp);
+                ipAddressIterator = ipAddressIterator->next;
+            }
           }
           else
           {
